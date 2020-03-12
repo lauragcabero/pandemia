@@ -7,9 +7,45 @@ const adalabCoordenadas = L.latLng(40.413334, -3.718114)
 const keepCodingCoordenadas = L.latLng(40.404162, -3.689889)
 
 const zoom = 16
-var map = L.map('map')
-map.setView(madridCoordenadas, zoom)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+const logoTheBridge = L.icon({
+    iconUrl: 'logos/logothebridge.png',
+    iconSize: [25, 25],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
+})
+
+const logoNeoland = L.icon({
+    iconUrl: 'logos/logothebridge.png',
+    iconSize: [25, 25],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
+})
+
+const mapa1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+const mapa2 = L.tileLayer('https://tile.osm.ch/switzerland/{z}/{x}/{y}.png')
+const marcadorMadrid = L.marker(theBridgeCoordenadas, { icon: logoTheBridge })
+
+const map = L.map('map', {
+    center: madridCoordenadas,
+    zoom,
+    layers: [mapa1, mapa2]
+})
+
+marcadorMadrid.addTo(map)
+
+const coordenadasGroup = L.layerGroup([marcadorMadrid])
+
+const baseMaps = {
+    'Mapa1': mapa1,
+    'Mapa2': mapa2
+}
+
+const cubreMapas = {
+    'bootcamps': coordenadasGroup
+}
+
+L.control.layers(baseMaps, cubreMapas).addTo(map)
 
 const theBridgeMarker = L.marker(theBridgeCoordenadas).addTo(map).bindPopup('Esto es TheBridge')
 const neolandMarker = L.marker(neolandCoordenadas).addTo(map).bindPopup('Esto es Neoland')
@@ -17,6 +53,8 @@ const upgradeHubMarker = L.marker(upgradeHubCoordenadas).addTo(map).bindPopup('E
 const ironHackMarker = L.marker(ironHackCoordenadas).addTo(map).bindPopup('Esto es IronHack')
 const adalabMarker = L.marker(adalabCoordenadas).addTo(map).bindPopup('Esto es Adalab')
 const keepCodingMarker = L.marker(keepCodingCoordenadas).addTo(map).bindPopup('Esto es KeepCoding')
+// map.setView(madridCoordenadas, zoom)
+
 
 const zonaInfeccion = L.circle(theBridgeCoordenadas, {
     color: 'red',
